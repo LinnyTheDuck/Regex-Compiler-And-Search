@@ -1,0 +1,142 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="GENERATOR" content="Mozilla/4.77 [en] (X11; U; Linux 2.4.12 i686) [Netscape]">
+<style>
+
+body { font-family: serif; font-size: 10pt; width: 650}
+h2 { font-size: 24px; 
+font-style: italic;
+}
+
+
+</style>
+<script async src='/cdn-cgi/bm/cv/669835187/api.js'></script></head>
+<body>
+<h2>COMPX301-21A&nbsp;&nbsp;&nbsp;Assignment 3:&nbsp; Pattern Searching</h2>
+<p>
+This assignment is intended to give you experience building a regular
+expression (regexp) FSM compiler and corresponding pattern matcher.
+Students are to work in pairs to complete this assignment (n.b. I
+encourage new partnerships, but I do not insist on it). Your
+implementation is expected to be written in Java, and compile and run
+on a Linux machine such as those in the R Block labs. Deviation from
+this specification requires prior approval from the lecturer or tutor.
+<p><b>Due:&nbsp; Saturday, 12 June 2021, 11:30pm</b></p>
+<p>
+<b>Overview:</b> &nbsp;&nbsp;&nbsp Implement a regexp pattern searcher
+using the FSM, deque and compiler techniques outlined in lectures. Your
+solution must consist of two programs: one called REcompile.java and
+the other called REsearch.java. The first of these must accept a
+regexp pattern as a command-line argument (enclosed within
+quotes&mdash;see "<b>Note</b>" below), and produce as
+standard output a description of the corresponding FSM, such that each
+line of output includes four things: the state-number, the symbol
+to be matched or branch-state indicator (or other type of indicator if you
+find an alternative useful), and two numbers indicating the two
+possible next states. The second program must
+accept, as standard input, the output of the first program, then it
+must execute a search for matching patterns within the text of a file
+whose name is given as a command-line argument. Each line of the text
+file that contains a substring that matches the regexp is output just once,
+regardless of the number of times the pattern might be satisfied in that line.
+(Note also we are just interested in searching text files.)
+<p><b>Regexp specification:</b> &nbsp;&nbsp;&nbsp; For this assignment,
+a wellformed regexp is specified as follows:
+<ol>
+<li> any symbol that does not have a special meaning (as given below)
+is a literal that matches itself
+<li> . is a <i> wildcard</i> symbol that matches any literal
+<li> adjacent regexps are concatenated to form a single regexp
+<li> * indicates closure (zero or more occurrences) on the preceding
+regexp
+<li> + indicates that the preceding regexp can occur one or more times
+<li> ? indicates that the preceding regexp can occur zero or one time
+<li> | is an infix alternation operator such that if <i> r</i> and
+<i>e</i> are regexps, then <i> r|e</i> is a regexp that matches one of
+either <i>r</i> or <i> e</i>
+<li> ( and ) may enclose a regexp to raise its precedence in the
+usual manner; such that if <i>e</i> is a regexp, then <i> (e)</i> is a
+regexp and is equivalent to <i> e</i>. <i> e</i> cannot be empty.
+<li> \ is an escape character that matches nothing but indicates the
+symbol immediately following the backslash loses any special meaning
+and is to be interpretted as a literal symbol
+<li> square brackets "[" and "]" enclose a list of symbols of which one and only
+one must match (i.e. a shorthand for multi-symbol alternation); all special
+symbols lose their special meaning within the brackets,
+and if the closing square bracket is to be a literal then it must be first
+in the enclosed list; and the list cannot be empty.
+<li> operator precedence is as follows (from high to low):
+<ul>
+<li> escaped characters (i.e. symbols preceded by \)
+<li> parentheses (i.e. the most deeply nested regexps have
+the highest precedence)
+<li> repetition/option operators (i.e. *, + and ?)
+<li> concatenation
+<li> alternation (i.e. | and [ ])
+</ul>
+<li> not required for this assignment, but a challenge to those who are interested,
+is how you might incorporate ! as a "do not match" operator, such that !e
+matches only a pattern that does not match the expression e.
+</ol>
+<p>
+You must implement your own parser/compiler, and your own FSM
+(simulating two-state and branching machines) similar to how it was
+shown to you in lectures, and you must implement your own dequeue to
+support the search. Note that you have some freedom in how you represent
+states within your search engine, and are not limited to the three-array
+way I used in lecture. For example, for the square-bracketted list of
+literals, it may be useful to represent the list as a String and use the contains()
+method to test for a match within REsearch.
+</p>
+<p>
+Note that you should make sure you have a good grammar before you
+start programming, so take time to write out the phrase structure
+rules that convince you that your program will accept all and only
+the regular expressions you deem legal. Anything not explicitly
+covered by this specification may be handled any way you want. For
+example, you can decide if a** is a legal expression or not. And it
+is okay to preprocess the expression before trying to compile it, if
+such preprocessing simplifies what you are trying to do. For
+example, you could decide to replace any ** with just * if you want
+** to be legal.
+</p>
+<p>
+Observe also that REsearch can be developed in parallel to
+REcompile simply by working out the states of a valid FSM by hand
+and testing REsearch with that.
+</p>
+<b>Note:</b> &nbsp;&nbsp;&nbsp Operating system shells typically
+parse command-line arguments as regular expressions, and some of the
+special characters defined for this assignment are also special
+characters for the command-line interpreter of various operating
+systems. This can make it hard to pass your regexp into the argument
+vector of your program. You can get around most problems by simply
+enclosing your regexp command-line argument within double-quote
+characters, which is what you should do for this assignment. To get a
+double-quote character into your regexp, you have to escape it by
+putting a backslash in front of it, and then the backslash is removed
+by the time the string gets into your program's command-line argument
+vector. There is only one other situation where Linux shells remove a
+backslash character from a quoted string, and that is when it precedes
+another backslash. For this assignment, it is the string that gets
+into your program that is the regexp&mdash;which may entail some extra
+backslashes in the argument. (N.b. Windows command prompt shell has a
+different syntax for parsing regexps than does Linux, so if you
+develop on a windows box, make sure you make the necessary adjustments
+for it to run under linux.)
+<p><b>Submission:</b> &nbsp; &nbsp; &nbsp; Place only copies of your
+well-documented, well-formatted source code and any README
+text file in an otherwise empty folder/directory whose name is your
+student ID number and the student ID number of your partner
+separated with an underscore, then compress it and submit through
+Moodle as per usual. I recommend including your grammar as a set of
+phrase structure rules in the README file or in the header of your
+compiler to assist in marking. See your tutor for details.
+<br>&nbsp;
+<br>&nbsp;
+<font size=-1>Tony C Smith, May 2021</font>
+<script type="text/javascript">(function(){window['__CF$cv$params']={r:'6eb1e6686acdee96',m:'62dfVksdI_Dw2CRW_67mrp.b1PETjztqNYZDd2TAcBw-1647144418-0-ASo+TQlu27hRryOgO2VrAtS8y4DvO08P3dwnDSH94e4faCsCi66jzkMidj1xc8SaEKs/s91R13A9AJ8ibm3CR50B/E9yIyjTHHVGeYd7jNGBqObmq5VIjLvN9wByGJRhUjdT/apKt+/BRaivTT7N8RcR5V0rXA7kls4DNMZ/CaV3',s:[0xe5f1ab8546,0x06c7c40cf9],}})();</script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/v652eace1692a40cfa3763df669d7439c1639079717194" integrity="sha512-Gi7xpJR8tSkrpF7aordPZQlW2DLtzUlZcumS8dMQjwDHEnw9I7ZLyiOj/6tZStRBGtGgN6ceN6cMH8z7etPGlw==" data-cf-beacon='{"rayId":"6eb1e6686acdee96","token":"68c7be77e3d142759776f2a5b7b8ae93","version":"2021.12.0","si":100}' crossorigin="anonymous"></script>
+</body>
+</html>
