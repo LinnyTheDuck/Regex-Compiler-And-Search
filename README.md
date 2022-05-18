@@ -51,7 +51,7 @@ Just REsearch: <br>
 > cat machinecode.txt | java REsearch file.txt
 
 ### Known Bugs
-- There seems to be an edge case with closure aka * that will produce a strange regex. Need to find the exact case and debug.
+- ((h)(o)(n)\*) refactors incorrectly to (((h)(o)(n))\*)
 
 Maybe I'll get round to fixing these one day...
 
