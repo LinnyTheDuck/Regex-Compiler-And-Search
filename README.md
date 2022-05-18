@@ -50,4 +50,9 @@ Just REcompile: <br>
 Just REsearch: <br>
 > cat machinecode.txt | java REsearch file.txt
 
+### Known Bugs
+- There seems to be an edge case with closure aka * that will produce a strange regex. Need to find the exact case and debug.
+
+Maybe I'll get round to fixing these one day...
+
 Written in 2021, 15/15
